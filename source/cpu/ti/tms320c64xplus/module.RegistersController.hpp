@@ -8,16 +8,16 @@
 #ifndef MODULE_REGISTERS_CONTROLLER_HPP_
 #define MODULE_REGISTERS_CONTROLLER_HPP_
 
-#include "Object.hpp"
+#include "module.Object.hpp"
 #include "api.ProcessorRegisters.hpp"
 
 extern void* __bss__;
 
 namespace module
 {
-    class RegistersController : public ::Object<>, public ::api::ProcessorRegisters
+    class RegistersController : public ::module::Object, public ::api::ProcessorRegisters
     {
-        typedef ::Object<>  Parent;
+        typedef ::module::Object  Parent;
       
       public:
       

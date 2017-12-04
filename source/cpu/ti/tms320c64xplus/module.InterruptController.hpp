@@ -8,7 +8,7 @@
 #ifndef MODULE_INTERRUPT_CONTROLLER_HPP_
 #define MODULE_INTERRUPT_CONTROLLER_HPP_
 
-#include "Object.hpp"
+#include "module.Object.hpp"
 #include "api.ProcessorInterrupt.hpp"
 #include "module.Processor.hpp"
 #include "module.Registers.hpp"
@@ -18,9 +18,9 @@
 
 namespace module
 {
-    class InterruptController : public ::Object<>, public ::api::ProcessorInterrupt
+    class InterruptController : public ::module::Object, public ::api::ProcessorInterrupt
     {
-        typedef ::Object<>                          Parent;  
+        typedef ::module::Object                    Parent;  
         typedef ::library::Stack<int64, Allocator>  Stack;
   
     public:
@@ -570,9 +570,9 @@ namespace module
         /**
          * All interrupt resource contexts.
          */
-        class Contexts : public ::Object<>
+        class Contexts : public InterruptController::Parent
         {
-            typedef ::Object<> Parent;
+            typedef InterruptController::Parent Parent;
           
         public:
         

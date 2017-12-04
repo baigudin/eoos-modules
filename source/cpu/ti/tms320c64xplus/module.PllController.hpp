@@ -8,15 +8,15 @@
 #ifndef MODULE_PLL_CONTROLLER_HPP_
 #define MODULE_PLL_CONTROLLER_HPP_
 
-#include "Object.hpp"
+#include "module.Object.hpp"
 #include "api.ProcessorPll.hpp"
 #include "module.reg.Pllc.hpp"
 
 namespace module
 {
-    class PllController : public ::Object<>, public ::api::ProcessorPll
+    class PllController : public ::module::Object, public ::api::ProcessorPll
     {
-        typedef ::Object<>  Parent;
+        typedef ::module::Object  Parent;
       
     public:
     

@@ -8,7 +8,7 @@
 #ifndef MODULE_PROCESSOR_CONTROLLER_HPP_
 #define MODULE_PROCESSOR_CONTROLLER_HPP_
 
-#include "Object.hpp"
+#include "module.Object.hpp"
 #include "module.Pll.hpp"
 #include "module.Registers.hpp"
 #include "module.Interrupt.hpp"
@@ -16,9 +16,9 @@
 
 namespace module
 {
-    class ProcessorController : public ::Object<>
+    class ProcessorController : public ::module::Object
     {
-        typedef ::Object<> Parent;
+        typedef ::module::Object Parent;
       
     public:
     

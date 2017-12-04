@@ -8,15 +8,15 @@
 #ifndef MODULE_TIMER_CONTROLLER_HPP_
 #define MODULE_TIMER_CONTROLLER_HPP_
 
-#include "Object.hpp"
+#include "module.Object.hpp"
 #include "api.ProcessorTimer.hpp"
 #include "module.reg.Timer.hpp"
 
 namespace module
 {
-    class TimerController : public ::Object<>, public ::api::ProcessorTimer
+    class TimerController : public ::module::Object, public ::api::ProcessorTimer
     {
-        typedef ::Object<> Parent;
+        typedef ::module::Object Parent;
         
         /**
          * Available interrupt sources.
