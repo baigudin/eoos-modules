@@ -497,16 +497,7 @@ namespace module
             /** 
              * Destructor.
              */
-           ~ContextLo(){}
-           
-            /**
-             * Equality operator.
-             *
-             * @param obj1 first object.
-             * @param obj2 second object.
-             * @return true if object are equal.
-             */
-            friend bool operator ==(const ContextLo& obj1, const ContextLo& obj2);     
+           ~ContextLo(){} 
       
         };
         
@@ -555,15 +546,6 @@ namespace module
              * Destructor.
              */
            ~ContextHi(){}
-           
-            /**
-             * Equality operator.
-             *
-             * @param obj1 first object.
-             * @param obj2 second object.
-             * @return true if object are equal.
-             */
-            friend bool operator ==(const ContextHi& obj1, const ContextHi& obj2);
       
         };
             
@@ -844,31 +826,12 @@ namespace module
     };
     
     /**
-     * HW interrupt handle routing.
-     *
-     * @param index index of HW interrupt vector number in contexts table
-     */  
-    void InterruptController::handler(register int32 index)
-    {
-        register ContextHi* ctx = &contextHi_[index];
-        #ifdef EOOS_NESTED_INT
-        register bool is = ctx->disable();
-        Interrupt::enableAll(true);
-        #endif
-        ctx->handler->main();
-        #ifdef EOOS_NESTED_INT
-        Interrupt::disableAll();
-        ctx->enable(is);
-        #endif
-    }
-    
-    /**
      * Equality operator.
      *
      * @param obj1 first object.
      * @param obj2 second object.
      * @return true if object are equal.
-     */
+     */     
     inline bool operator ==(const InterruptController::ContextHi& obj1, const InterruptController::ContextHi& obj2)
     {
         if      ( obj1.number  != obj2.number  ) return false;
@@ -878,45 +841,20 @@ namespace module
         else if ( obj1.stack   != obj2.stack   ) return false;
         else return true;
     }      
-    
+         
     /**
      * Equality operator.
      *
      * @param obj1 first object.
      * @param obj2 second object.
      * @return true if object are equal.
-     */
+     */     
     inline bool operator ==(const InterruptController::ContextLo& obj1, const InterruptController::ContextLo& obj2)
     {
         if      ( obj1.tos != obj2.tos ) return false;
         else if ( obj1.reg != obj2.reg ) return false;
         else return true;
-    }   
-  
-    /**
-     * The module has been initialized successfully (no boot).
-     */
-    int32 InterruptController::isInitialized_;  
-  
-    /**
-     * HW interrupt registers (no boot).
-     */
-    reg::Intc* InterruptController::regInt_;  
+    }     
     
-    /**
-     * All interrupt resource contexts (no boot).
-     */
-    InterruptController::Contexts* InterruptController::contexts_;
-    
-    /**
-     * All interrupt resource contexts (no boot).
-     */    
-    InterruptController::ContextHi* InterruptController::contextHi_;
-    
-    /**
-     * Buffer for allocating low level interrupts contexts table (no boot).
-     */    
-    uint64 InterruptController::Contexts::buffer_[ InterruptController::Contexts::NUMBER_VECTORS ];      
-  
 }
 #endif // MODULE_INTERRUPT_CONTROLLER_HPP_
