@@ -363,7 +363,6 @@ namespace module
                 if( initAintc() == false) break;
                 // Stage complete
                 stage = 0;
-                break;
             }
             while(false);
             switch(stage)
