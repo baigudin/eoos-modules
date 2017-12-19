@@ -120,7 +120,10 @@ namespace module
          */  
         virtual void setInitialization(::api::Stack<int64>& stack, void* entry, int32 argument)
         {
-            if( not isConstructed_ ) return;
+            if( not isConstructed_ ) 
+            {
+                return;
+            }
             // Initialize Control Status Register (Csr).        
             Csr csr = 0;
             // Set GIE bit to zero for restoring with out crash, because

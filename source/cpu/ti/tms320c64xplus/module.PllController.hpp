@@ -78,9 +78,15 @@ namespace module
             cpuClock_ = config.cpuClock;
             sourceClock_ = config.sourceClock;
             // SYSREFCLK must be in 400 MHz to 1200 MHz range 
-            if(cpuClock_ < 400000000 || cpuClock_ > 1200000000) return false;
+            if(cpuClock_ < 400000000 || cpuClock_ > 1200000000) 
+            {
+                return false;
+            }
             uint64 pllm = cpuClock_ / sourceClock_ - 1;
-            if(pllm & ~0x000000000000003f) return false;      
+            if(pllm & ~0x000000000000003f) 
+            {
+                return false;      
+            }
             // CLKIN cycle time in ns
             int64 c = 1000000000 / sourceClock_;
             // Create PLL registers map
@@ -108,7 +114,10 @@ namespace module
             
             // Wait 128 * C ns for TMS320C645x or min 1000 ns for TMS320C6457 for PLL reset
             count = 128 * c;
-            if(count < 1000) count = 1000;
+            if(count < 1000) 
+            {
+                count = 1000;
+            }
             while(count) count--;
             // Bring PLL out of reset
             regPll->pllctl.bit.pllrst = 0;
@@ -138,7 +147,10 @@ namespace module
          */
         bool construct()
         {
-            if(isInitialized_ != IS_INITIALIZED) return false;
+            if(isInitialized_ != IS_INITIALIZED) 
+            {
+                return false;
+            }
             return true;
         }  
         

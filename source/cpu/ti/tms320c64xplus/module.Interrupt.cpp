@@ -20,8 +20,14 @@ namespace module
     {
         ::api::ProcessorInterrupt* resource;
         resource = res.handler != NULL ? new InterruptController(res.handler, res.source) : new InterruptController();
-        if(resource == NULL) return NULL; 
-        if(resource->isConstructed()) return resource;       
+        if(resource == NULL) 
+        {
+            return NULL; 
+        }
+        if(resource->isConstructed()) 
+        {
+            return resource;       
+        }
         delete resource;
         return NULL;      
     }

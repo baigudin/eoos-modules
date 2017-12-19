@@ -166,8 +166,10 @@ namespace module
          */      
         virtual void jump()
         {
-            if( not isAllocated() ) return;
-            jumpLow(ctx_.hi->number);    
+            if( isAllocated() )
+            {
+                jumpLow(ctx_.hi->number);    
+            }
         }
         
         /**
@@ -175,8 +177,10 @@ namespace module
          */     
         virtual void clear()
         {
-            if( not isAllocated() ) return;    
-            clearLow(ctx_.hi->number);    
+            if( isAllocated() ) 
+            {
+                clearLow(ctx_.hi->number);    
+            }
         }
         
         /**
@@ -184,8 +188,10 @@ namespace module
          */    
         virtual void set()
         {
-            if( not isAllocated() ) return;
-            setLow(ctx_.hi->number);    
+            if( isAllocated() ) 
+            {
+                setLow(ctx_.hi->number);    
+            }
         }  
         
         /**
@@ -195,8 +201,14 @@ namespace module
          */    
         virtual bool disable()
         {
-            if( not isAllocated() ) return false;
-            return disableLow(ctx_.hi->number);
+            if( isAllocated() ) 
+            {
+                return disableLow(ctx_.hi->number);
+            }
+            else
+            {
+                return false;                
+            }
         }
         
         /**
@@ -206,8 +218,10 @@ namespace module
          */
         virtual void enable(bool status)
         {
-            if( not isAllocated() ) return;    
-            enableLow(ctx_.hi->number, status);    
+            if( isAllocated() )
+            {
+                enableLow(ctx_.hi->number, status);    
+            }
         }
        
         /**
@@ -219,11 +233,20 @@ namespace module
          */      
         virtual bool setHandler(::api::Task& handler, int32 source)
         {
-            if( not isConstructed_ ) return false;
-            if( isAllocated() )  return false;
+            if( not isConstructed_ ) 
+            {
+                return false;
+            }
+            if( isAllocated() )  
+            {
+                return false;
+            }
             Source src = static_cast<Source>(source);
             int32 index = contexts_->allocate(handler, src);
-            if(index == -1) return false;
+            if(index == -1) 
+            {
+                return false;
+            }
             ctx_.hi = &contexts_->getHi(index);
             ctx_.lo = &contexts_->getLo(index);
             setMux();
@@ -236,7 +259,10 @@ namespace module
          */        
         virtual void removeHandler()
         {
-            if( not isAllocated() ) return;  
+            if( not isAllocated() ) 
+            {
+                return;  
+            }
             disable();
             clear();
             resetMux();
@@ -250,8 +276,10 @@ namespace module
          */
         virtual void setContext(::api::ProcessorRegisters& reg)
         {
-            if( not isAllocated() ) return;
-            ctx_.lo->reg = reg.getRegisters();
+            if( isAllocated() )
+            {
+                ctx_.lo->reg = reg.getRegisters();
+            }
         }
 
         /**
@@ -259,8 +287,10 @@ namespace module
          */
         virtual void restoreContext()
         {
-            if( not isAllocated() ) return;
-            ctx_.lo->reg = ctx_.hi->reg->getRegisters();    
+            if( isAllocated() )
+            {
+                ctx_.lo->reg = ctx_.hi->reg->getRegisters();    
+            }
         }        
       
         /**
@@ -275,10 +305,16 @@ namespace module
             regInt_ = 0;
             contexts_ = NULL;
             contextHi_ = NULL;
-            if(config.cpuClock <= 0) return false;      
+            if(config.cpuClock <= 0) 
+            {
+                return false;      
+            }
             regInt_ = new (reg::Intc::ADDRESS) reg::Intc();
             contexts_ = new Contexts();
-            if( contexts_ == NULL || not contexts_->isConstructed() ) return false;
+            if( contexts_ == NULL || not contexts_->isConstructed() ) 
+            {
+                return false;
+            }
             contextHi_ = &contexts_->getHi(0);
             initLow();
             // Set base value of registers
@@ -311,7 +347,10 @@ namespace module
          */
         bool construct()
         {
-            if(isInitialized_ != IS_INITIALIZED) return false;
+            if(isInitialized_ != IS_INITIALIZED) 
+            {
+                return false;
+            }
             return true;
         }
         
@@ -324,7 +363,10 @@ namespace module
          */
         bool construct(::api::Task& handler, int32 source)
         {
-            if(isInitialized_ != IS_INITIALIZED) return false;
+            if(isInitialized_ != IS_INITIALIZED) 
+            {
+                return false;
+            }
             return setHandler(handler, source);
         }   
         
@@ -335,7 +377,10 @@ namespace module
          */
         bool isAllocated()
         {
-            if( not isConstructed_ ) return false;
+            if( not isConstructed_ ) 
+            {
+                return false;
+            }
             return index_ == -1 ? false : true;
         }
         
@@ -368,7 +413,10 @@ namespace module
          */    
         static void setMuxRegister(int32 source, int32 vn)
         {
-            if(vn < 4 || vn > 16) return;
+            if(vn < 4 || vn > 16) 
+            {
+                return;
+            }
             int32 i = vn >> 2;
             int32 p = vn & 0x3;
             // Do reading a current register value, modify the value, and store it back. 
@@ -590,14 +638,23 @@ namespace module
              */      
             int32 allocate(::api::Task& task, Source source)
             {
-                if( not isConstructed() ) return false;
-                if( not isSource(source) ) return false;
+                if( not isConstructed() ) 
+                {
+                    return false;
+                }
+                if( not isSource(source) ) 
+                {
+                    return false;
+                }
                 int32 index = -1;
                 // Test if interrupt source had been alloced
                 bool wasAllocated = false;
                 for(int32 i=0; i<NUMBER_VECTORS; i++)
                 {
-                    if(hi_[i].source != source) continue;
+                    if(hi_[i].source != source) 
+                    {
+                        continue;
+                    }
                     wasAllocated = true;
                     break;
                 }        
@@ -605,11 +662,17 @@ namespace module
                 // Looking for free vector and alloc that if it is found          
                 for(int32 i=0; i<Contexts::NUMBER_VECTORS; i++)
                 {
-                    if(hi_[i].handler != NULL) continue;
+                    if(hi_[i].handler != NULL) 
+                    {
+                        continue;
+                    }
                     index = i;
                     break;
                 }
-                if(index < 0) return -1;
+                if(index < 0) 
+                {
+                    return -1;
+                }
                 // Set new context
                 ContextHi* hi = &hi_[index];
                 ContextLo* lo = &lo_[index];
@@ -617,9 +680,15 @@ namespace module
                 hi->source = source;
                 hi->handler = &task;      
                 hi->reg = ::module::Registers::create();
-                if(hi->reg == NULL) return -1;
+                if(hi->reg == NULL) 
+                {
+                    return -1;
+                }
                 hi->stack = new Stack(::module::Processor::getStackType(), task.getStackSize() >> 3);
-                if(hi->stack == NULL || not hi->stack->isConstructed()) return -1;
+                if(hi->stack == NULL || not hi->stack->isConstructed()) 
+                {
+                    return -1;
+                }
                 lo->reg = hi->reg->getRegisters();
                 lo->tos = hi->stack->getTos();      
                 return index;
@@ -632,8 +701,14 @@ namespace module
              */        
             void free(int32 index)
             {
-                if( not isConstructed() ) return;      
-                if( not isIndex(index) ) return ;   
+                if( not isConstructed() ) 
+                {
+                    return;      
+                }
+                if( not isIndex(index) ) 
+                {
+                    return;   
+                }
                 ContextHi* hi = &hi_[index];
                 ContextLo* lo = &lo_[index];        
                 delete hi->stack;        
@@ -655,8 +730,14 @@ namespace module
              */        
             ContextHi& getHi(int32 index)
             {
-                if( not isConstructed() ) return illegalHi_;      
-                if( not isIndex(index) ) return illegalHi_;              
+                if( not isConstructed() ) 
+                {
+                    return illegalHi_;      
+                }
+                if( not isIndex(index) ) 
+                {
+                    return illegalHi_;
+                }
                 return hi_[index];
             }
           
@@ -668,8 +749,14 @@ namespace module
              */              
             ContextLo& getLo(int32 index)
             {
-                if( not isConstructed() ) return illegalLo_;      
-                if( not isIndex(index) ) return illegalLo_;              
+                if( not isConstructed() ) 
+                {
+                    return illegalLo_;      
+                }
+                if( not isIndex(index) ) 
+                {
+                    return illegalLo_;              
+                }
                 return lo_[index];
             }
           
@@ -684,9 +771,18 @@ namespace module
              */
             bool construct()
             {
-                if( not isConstructed() ) return false;
-                if( not hi_.isConstructed() ) return false;
-                if( not lo_.isConstructed() ) return false;
+                if( not isConstructed() ) 
+                {
+                    return false;
+                }
+                if( not hi_.isConstructed() ) 
+                {
+                    return false;
+                }
+                if( not lo_.isConstructed() ) 
+                {
+                    return false;
+                }
                 hi_.setIllegal(illegalHi_);
                 lo_.setIllegal(illegalLo_);
                 hi_.fill(illegalHi_);
@@ -834,12 +930,12 @@ namespace module
      */     
     inline bool operator ==(const InterruptController::ContextHi& obj1, const InterruptController::ContextHi& obj2)
     {
-        if      ( obj1.number  != obj2.number  ) return false;
-        else if ( obj1.source  != obj2.source  ) return false;
-        else if ( obj1.handler != obj2.handler ) return false;
-        else if ( obj1.reg     != obj2.reg     ) return false;
-        else if ( obj1.stack   != obj2.stack   ) return false;
-        else return true;
+        if      ( obj1.number  != obj2.number  ) { return false; }
+        else if ( obj1.source  != obj2.source  ) { return false; }
+        else if ( obj1.handler != obj2.handler ) { return false; }
+        else if ( obj1.reg     != obj2.reg     ) { return false; }
+        else if ( obj1.stack   != obj2.stack   ) { return false; }
+        else { return true; }
     }      
          
     /**
@@ -851,9 +947,9 @@ namespace module
      */     
     inline bool operator ==(const InterruptController::ContextLo& obj1, const InterruptController::ContextLo& obj2)
     {
-        if      ( obj1.tos != obj2.tos ) return false;
-        else if ( obj1.reg != obj2.reg ) return false;
-        else return true;
+        if      ( obj1.tos != obj2.tos ) { return false; }
+        else if ( obj1.reg != obj2.reg ) { return false; }
+        else {return true; }
     }     
     
 }

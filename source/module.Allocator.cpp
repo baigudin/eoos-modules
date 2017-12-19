@@ -27,7 +27,10 @@ namespace module
      */      
     void Allocator::free(void* ptr)
     {
-        if(heap_ != NULL && ptr != NULL) heap_->free(ptr);  
+        if(heap_ != NULL && ptr != NULL) 
+        {
+            heap_->free(ptr);  
+        }
     }
     
     /**

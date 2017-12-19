@@ -20,8 +20,14 @@ namespace module
     {
         ::api::ProcessorTimer* resource;  
         resource = res.index >= 0 ? new TimerController(res.index) : new TimerController();
-        if(resource == NULL) return NULL; 
-        if(resource->isConstructed()) return resource;       
+        if(resource == NULL) 
+        {
+            return NULL; 
+        }
+        if(resource->isConstructed()) 
+        {
+            return resource;       
+        }
         delete resource;
         return NULL;     
     }  

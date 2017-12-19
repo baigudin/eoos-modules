@@ -18,8 +18,14 @@ namespace module
     ::api::ProcessorRegisters* Registers::create()
     {
         ::api::ProcessorRegisters* resource = new RegistersController();
-        if(resource == NULL) return NULL; 
-        if(resource->isConstructed()) return resource;       
+        if(resource == NULL) 
+        {
+            return NULL; 
+        }
+        if(resource->isConstructed()) 
+        {
+            return resource;       
+        }
         delete resource;
         return NULL;      
     }
