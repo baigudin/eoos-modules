@@ -813,14 +813,14 @@ namespace module
             }      
             
             /**
-             * Hi level interrupt contexts.
+             * Hi level interrupt contexts static buffer.
              */            
-            ::library::Buffer<ContextHi, NUMBER_VECTORS> hi_;
+            ::library::Buffer<ContextHi, NUMBER_VECTORS, Allocator> hi_;
             
             /**
-             * Low level interrupt contexts.
+             * Low level interrupt contexts dynamic buffer.
              */    
-            ::library::Buffer<ContextLo> lo_;
+            ::library::Buffer<ContextLo, 0, Allocator> lo_;
           
             /**
              * Hi level interrupt illegal context.
