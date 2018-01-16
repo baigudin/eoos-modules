@@ -154,7 +154,7 @@ namespace module
         /**
          * Returns this timer index.
          *
-         * @return index of this timer, or -1 if error has been occurred.
+         * @return index of this timer, or -1 if an error has been occurred.
          */      
         virtual int32 getIndex() const
         {
@@ -194,7 +194,7 @@ namespace module
         /**
          * Returns an available interrupt source for this timer.
          *
-         * @return available interrupt source, or -1 if error has been occurred.
+         * @return available interrupt source, or -1 if an error has been occurred.
          */  
         virtual int32 getInterrupSource() const
         {
