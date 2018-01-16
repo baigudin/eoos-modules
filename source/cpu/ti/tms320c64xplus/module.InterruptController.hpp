@@ -297,7 +297,7 @@ namespace module
          * Initialization.
          *
          * @param config the operating system configuration.
-         * @return true if no errors.
+         * @return true if no errors have been occurred.
          */
         static bool initialize(const ::Configuration& config)
         {
@@ -634,7 +634,7 @@ namespace module
              *
              * @param task    user class which implements an interrupt handler interface.
              * @param source  available interrupt source.
-             * @return a vector intdex, or -1 if error has been occurred.
+             * @return a vector intdex, or -1 if an error has been occurred.
              */      
             int32 allocate(::api::Task& task, Source source)
             {

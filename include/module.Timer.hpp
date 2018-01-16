@@ -34,7 +34,7 @@ namespace module
          * Returns the timer interface of a target processor.
          *
          * @param res the module resource creating structure.
-         * @return target processor timer interface, or NULL if error has been occurred.
+         * @return target processor timer interface, or NULL if an error has been occurred.
          */
         static ::api::ProcessorTimer* create(const ::module::Timer::Resource res);    
         

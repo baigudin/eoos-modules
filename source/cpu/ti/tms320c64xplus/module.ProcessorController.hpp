@@ -41,7 +41,7 @@ namespace module
          * Initialization.
          *
          * @param config the operating system configuration.
-         * @return true if no errors.
+         * @return true if no errors have been occurred.
          */
         static bool initialize(const ::Configuration& config)
         {
