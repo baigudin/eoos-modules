@@ -139,10 +139,10 @@ namespace module
             // Thus, we have to set the bit for globally enabling interrupts of a new thread.
             itsr.bit.gie = 1;
             // Initialize self values of registers
-            irp_ = reinterpret_cast<int32>(entry);
+            irp_ = reinterpret_cast<uint32>(entry);
             b3_  = 0; // LP
-            b14_ = reinterpret_cast<int32>(&__bss__);        
-            b15_ = reinterpret_cast<int32>(stack.getTos());
+            b14_ = reinterpret_cast<uint32>(&__bss__);        
+            b15_ = reinterpret_cast<uint32>(stack.getTos());
             a4_  = argument;
             a5_  = 0;
             b4_  = 0;
@@ -382,29 +382,29 @@ namespace module
         /**
          * For alignment to eight on stack
          */
-        int64 align8_;
+        uint64 align8_;
       
         /**
          * CPU registers.    
          */
-        int32 a0_,   a1_,   b0_,   b1_,
-              a2_,   a3_,   b2_,   b3_,
-              a4_,   a5_,   b4_,   b5_,
-              a6_,   a7_,   b6_,   b7_,
-              a8_,   a9_,   b8_,   b9_,
-              a10_,  a11_,  b10_,  b11_,
-              a12_,  a13_,  b12_,  b13_,
-              a14_,  a15_,  b14_,  b15_,
-              a16_,  a17_,  b16_,  b17_,
-              a18_,  a19_,  b18_,  b19_,
-              a20_,  a21_,  b20_,  b21_,
-              a22_,  a23_,  b22_,  b23_,
-              a24_,  a25_,  b24_,  b25_,
-              a26_,  a27_,  b26_,  b27_,
-              a28_,  a29_,  b28_,  b29_,
-              a30_,  a31_,  b30_,  b31_,
-              amr_,  irp_,  csr_, itsr_,
-              ilc_, rilc_, tmp1_, tmp2_;
+        uint32 a0_,   a1_,   b0_,   b1_,
+               a2_,   a3_,   b2_,   b3_,
+               a4_,   a5_,   b4_,   b5_,
+               a6_,   a7_,   b6_,   b7_,
+               a8_,   a9_,   b8_,   b9_,
+               a10_,  a11_,  b10_,  b11_,
+               a12_,  a13_,  b12_,  b13_,
+               a14_,  a15_,  b14_,  b15_,
+               a16_,  a17_,  b16_,  b17_,
+               a18_,  a19_,  b18_,  b19_,
+               a20_,  a21_,  b20_,  b21_,
+               a22_,  a23_,  b22_,  b23_,
+               a24_,  a25_,  b24_,  b25_,
+               a26_,  a27_,  b26_,  b27_,
+               a28_,  a29_,  b28_,  b29_,
+               a30_,  a31_,  b30_,  b31_,
+               amr_,  irp_,  csr_, itsr_,
+               ilc_, rilc_, tmp1_, tmp2_;
       
     };  
 }
