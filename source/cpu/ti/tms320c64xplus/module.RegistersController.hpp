@@ -118,7 +118,7 @@ namespace module
          * @param entry router entry point.
          * @param arg1  first router argument.
          */  
-        virtual void setInitialization(::api::Stack<int64>& stack, void* entry, int32 argument)
+        virtual void setInitialization(::api::Stack<int64>& stack, void* const entry, const int32 argument)
         {
             if( not isConstructed_ ) 
             {

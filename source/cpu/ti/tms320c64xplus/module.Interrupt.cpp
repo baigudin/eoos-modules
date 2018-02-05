@@ -18,8 +18,9 @@ namespace module
      */
     ::api::ProcessorInterrupt* Interrupt::create(const ::module::Interrupt::Resource res) 
     {
-        ::api::ProcessorInterrupt* resource;
-        resource = res.handler != NULL ? new InterruptController(res.handler, res.source) : new InterruptController();
+        ::api::ProcessorInterrupt* const resource = res.handler != NULL 
+                                                  ? new InterruptController(res.handler, res.source) 
+                                                  : new InterruptController();
         if(resource == NULL) 
         {
             return NULL; 

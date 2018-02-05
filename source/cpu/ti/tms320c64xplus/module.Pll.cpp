@@ -17,8 +17,7 @@ namespace module
      */
     ::api::ProcessorPll* Pll::create()
     {
-        ::api::ProcessorPll* resource;
-        resource = new PllController();
+        ::api::ProcessorPll* const resource = new PllController();
         if(resource == NULL) 
         {
             return NULL; 

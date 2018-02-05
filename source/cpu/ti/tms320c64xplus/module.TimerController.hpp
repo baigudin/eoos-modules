@@ -55,7 +55,7 @@ namespace module
          *
          * @param index available timer index.
          */
-        TimerController(int32 index) : Parent(),
+        TimerController(const int32 index) : Parent(),
             isConstructed_ (getConstruct()),        
             timerClock_    (0),
             index_         (-1),
@@ -121,19 +121,19 @@ namespace module
          *
          * @param count timer counter register value.
          */      
-        virtual void setCount(int64 count)
+        virtual void setCount(const int64 count)
         {
             if( not isConstructed_ ) 
             {
                 return;
             }
             uint64 cnt = count;
-            uint64 prd = getPeriod();
+            const uint64 prd = getPeriod();
             if(cnt > prd) 
             {
                 return;
             }
-            bool is = isStarted();
+            const bool is = isStarted();
             if(is) 
             {
                 stop();
@@ -152,19 +152,19 @@ namespace module
          *
          * @param us timer period in microseconds, zero sets the period to maxinum value.
          */      
-        virtual void setPeriod(int64 us=0)
+        virtual void setPeriod(const int64 us=0)
         {
             if( not isConstructed_ ) 
             {
                 return;
             }
-            int64 clock = getInternalClock();
+            const int64 clock = getInternalClock();
             if(clock == 0) 
             {
                 return;       
             }
             uint64 prd = us != 0 ? (us * clock) / 1000000 : 0xffffffffffffffff;
-            bool is = isStarted();
+            const bool is = isStarted();
             if(is) 
             { 
                 stop();
@@ -288,7 +288,7 @@ namespace module
          * @param index available timer index.
          * @return boolean result.
          */  
-        bool construct(int32 index)
+        bool construct(const int32 index)
         {
             if(isInitialized_ != IS_INITIALIZED) 
             {
@@ -364,7 +364,7 @@ namespace module
          * @param index a timer index.
          * @return boolean result.
          */  
-        bool isIndex(int32 index)
+        bool isIndex(const int32 index)
         {
             return 0 <= index && index < RESOURCES_NUMBER ? true : false;
         }

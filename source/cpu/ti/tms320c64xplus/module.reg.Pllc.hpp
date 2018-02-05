@@ -74,7 +74,7 @@ namespace module
              * @param ptr  address of memory.
              * @return address of memory.
              */
-            void* operator new(uint32, uint32 ptr)
+            void* operator new(uint32, const uint32 ptr)
             {
                 return reinterpret_cast<void*>(ptr);
             }    
@@ -85,7 +85,7 @@ namespace module
             union Plldiv
             {
                 Plldiv(){}
-                Plldiv(uint32 v){value = v;}
+                Plldiv(const uint32 v){value = v;}
                ~Plldiv(){}    
               
                 uint32 value;
@@ -110,7 +110,7 @@ namespace module
             union Pllctl
             {
                 Pllctl(){}
-                Pllctl(uint32 v){value = v;}
+                Pllctl(const uint32 v){value = v;}
                ~Pllctl(){}    
               
                 uint32 value;
@@ -138,7 +138,7 @@ namespace module
             union Pllm
             {
                 Pllm(){}
-                Pllm(uint32 v){value = v;}
+                Pllm(const uint32 v){value = v;}
                ~Pllm(){}    
               
                 uint32 value;
@@ -155,7 +155,7 @@ namespace module
             union Prediv
             {
                 Prediv(){}
-                Prediv(uint32 v){value = v;}
+                Prediv(const uint32 v){value = v;}
                ~Prediv(){}    
               
                 uint32 value;
@@ -195,7 +195,7 @@ namespace module
             union Postdiv
             {
                 Postdiv(){}
-                Postdiv(uint32 v){value = v;}
+                Postdiv(const uint32 v){value = v;}
                ~Postdiv(){}    
               
                 uint32 value;
@@ -220,7 +220,7 @@ namespace module
             union Pllcmd
             {
                 Pllcmd(){}
-                Pllcmd(uint32 v){value = v;}
+                Pllcmd(const uint32 v){value = v;}
                ~Pllcmd(){}    
               
                 uint32 value;
@@ -237,7 +237,7 @@ namespace module
             union Pllstat
             {
                 Pllstat(){}
-                Pllstat(uint32 v){value = v;}
+                Pllstat(const uint32 v){value = v;}
                ~Pllstat(){}    
               
                 uint32 value;
@@ -255,7 +255,7 @@ namespace module
             union Alnctl
             {
                 Alnctl(){}
-                Alnctl(uint32 v){value = v;}
+                Alnctl(const uint32 v){value = v;}
                ~Alnctl(){}    
               
                 uint32 value;
@@ -287,7 +287,7 @@ namespace module
             union Dchange
             {
                 Dchange(){}
-                Dchange(uint32 v){value = v;}
+                Dchange(const uint32 v){value = v;}
                ~Dchange(){}    
               
                 uint32 value;
@@ -319,7 +319,7 @@ namespace module
             union Cken
             {
                 Cken(){}
-                Cken(uint32 v){value = v;}
+                Cken(const uint32 v){value = v;}
                ~Cken(){}    
               
                 uint32 value;
@@ -336,7 +336,7 @@ namespace module
             union Ckstat
             {
                 Ckstat(){}
-                Ckstat(uint32 v){value = v;}
+                Ckstat(const uint32 v){value = v;}
                ~Ckstat(){}    
               
                 uint32 value;
@@ -353,7 +353,7 @@ namespace module
             union Systat
             {
                 Systat(){}
-                Systat(uint32 v){value = v;}
+                Systat(const uint32 v){value = v;}
                ~Systat(){}    
               
                 uint32 value;

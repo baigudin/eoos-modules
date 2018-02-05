@@ -17,7 +17,7 @@ namespace module
      */
     ::api::ProcessorRegisters* Registers::create()
     {
-        ::api::ProcessorRegisters* resource = new RegistersController();
+        ::api::ProcessorRegisters* const resource = new RegistersController();
         if(resource == NULL) 
         {
             return NULL; 

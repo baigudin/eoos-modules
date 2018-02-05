@@ -55,7 +55,7 @@ namespace module
              * @param ptr  address of memory.
              * @return address of memory.
              */     
-            void* operator new(uint32, uint32 ptr)
+            void* operator new(uint32, const uint32 ptr)
             {
                 return reinterpret_cast<void*>(ptr);
             } 
@@ -72,7 +72,7 @@ namespace module
             union EmumgtClkspd
             {
                 EmumgtClkspd(){}
-                EmumgtClkspd(uint32 v){value = v;}
+                EmumgtClkspd(const uint32 v){value = v;}
                ~EmumgtClkspd(){}    
               
                 uint32 value;
@@ -98,7 +98,7 @@ namespace module
             union Cntlo
             {
                 Cntlo(){}
-                Cntlo(uint32 v){value = v;}
+                Cntlo(const uint32 v){value = v;}
                ~Cntlo(){}    
               
                 uint32 value;
@@ -114,7 +114,7 @@ namespace module
             union Cnthi
             {
                 Cnthi(){}
-                Cnthi(uint32 v){value = v;}
+                Cnthi(const uint32 v){value = v;}
                ~Cnthi(){}    
               
                 uint32 value;
@@ -130,7 +130,7 @@ namespace module
             union Prdlo
             {
                 Prdlo(){}
-                Prdlo(uint32 v){value = v;}
+                Prdlo(const uint32 v){value = v;}
                ~Prdlo(){}    
               
                 uint32 value;
@@ -146,7 +146,7 @@ namespace module
             union Prdhi
             {
                 Prdhi(){}
-                Prdhi(uint32 v){value = v;}
+                Prdhi(const uint32 v){value = v;}
                ~Prdhi(){}    
               
                 uint32 value;
@@ -162,7 +162,7 @@ namespace module
             union Tcr
             {
                 Tcr(){}
-                Tcr(uint32 v){value = v;}
+                Tcr(const uint32 v){value = v;}
                ~Tcr(){}    
               
                 uint32 value;
@@ -193,7 +193,7 @@ namespace module
             union Tgcr
             {
                 Tgcr(){}
-                Tgcr(uint32 v){value = v;}
+                Tgcr(const uint32 v){value = v;}
                ~Tgcr(){}    
               
                 uint32 value;
@@ -215,7 +215,7 @@ namespace module
             union Wdtcr
             {
                 Wdtcr(){}
-                Wdtcr(uint32 v){value = v;}
+                Wdtcr(const uint32 v){value = v;}
                ~Wdtcr(){}    
               
                 uint32 value;

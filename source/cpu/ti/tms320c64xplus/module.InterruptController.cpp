@@ -14,11 +14,11 @@ namespace module
      *
      * @param index index of HW interrupt vector number in contexts table
      */  
-    void InterruptController::handler(register int32 index)
+    void InterruptController::handler(const int32 index)
     {
-        register ContextHi* ctx = &contextHi_[index];
+        register ContextHi* const ctx = &contextHi_[index];
         #ifdef EOOS_NESTED_INT
-        register bool is = ctx->disable();
+        register const bool is = ctx->disable();
         Interrupt::enableAll(true);
         #endif
         ctx->handler->main();

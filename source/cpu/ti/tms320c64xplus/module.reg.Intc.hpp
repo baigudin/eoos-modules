@@ -50,7 +50,7 @@ namespace module
              * @param ptr  address of memory.
              * @return address of memory.
              */     
-            void* operator new(uint32, uint32 ptr)
+            void* operator new(uint32, const uint32 ptr)
             {
                 return reinterpret_cast<void*>(ptr);
             }       
@@ -61,7 +61,7 @@ namespace module
             union Evtflag
             {
                 Evtflag(){}
-                Evtflag(uint32 v){value = v;}
+                Evtflag(const uint32 v){value = v;}
                ~Evtflag(){}    
               
                 uint32 value;
@@ -108,7 +108,7 @@ namespace module
             union Evtset
             {
                 Evtset(){}
-                Evtset(uint32 v){value = v;}
+                Evtset(const uint32 v){value = v;}
                ~Evtset(){}    
               
                 uint32 value;
@@ -155,7 +155,7 @@ namespace module
             union Evtclr
             {
                 Evtclr(){}
-                Evtclr(uint32 v){value = v;}
+                Evtclr(const uint32 v){value = v;}
                ~Evtclr(){}    
               
                 uint32 value;
@@ -202,7 +202,7 @@ namespace module
             union Evtmask
             {
                 Evtmask(){}
-                Evtmask(uint32 v){value = v;}
+                Evtmask(const uint32 v){value = v;}
                ~Evtmask(){}    
               
                 uint32 value;
@@ -249,7 +249,7 @@ namespace module
             union Mevtflag
             {
                 Mevtflag(){}
-                Mevtflag(uint32 v){value = v;}
+                Mevtflag(const uint32 v){value = v;}
                ~Mevtflag(){}    
               
                 uint32 value;
@@ -296,7 +296,7 @@ namespace module
             union Intmux
             {
                 Intmux(){}
-                Intmux(uint32 v){value = v;}
+                Intmux(const uint32 v){value = v;}
                ~Intmux(){}    
               
                 uint32 value;
@@ -319,7 +319,7 @@ namespace module
             union Aegmux
             {
                 Aegmux(){}
-                Aegmux(uint32 v){value = v;}
+                Aegmux(const uint32 v){value = v;}
                ~Aegmux(){}    
               
                 uint32 value;
@@ -338,7 +338,7 @@ namespace module
             union Expmask
             {
                 Expmask(){}
-                Expmask(uint32 v){value = v;}
+                Expmask(const uint32 v){value = v;}
                ~Expmask(){}    
               
                 uint32 value;
@@ -385,7 +385,7 @@ namespace module
             union Mexpflag
             {
                 Mexpflag(){}
-                Mexpflag(uint32 v){value = v;}
+                Mexpflag(const uint32 v){value = v;}
                ~Mexpflag(){}    
               
                 uint32 value;
@@ -534,7 +534,7 @@ namespace module
             union Intxstat
             {
                 Intxstat(){}
-                Intxstat(uint32 v){value = v;}
+                Intxstat(const uint32 v){value = v;}
                ~Intxstat(){}    
               
                 uint32 value;
@@ -553,7 +553,7 @@ namespace module
             union Intxclr
             {
                 Intxclr(){}
-                Intxclr(uint32 v){value = v;}
+                Intxclr(const uint32 v){value = v;}
                ~Intxclr(){}    
               
                 uint32 value;
@@ -570,7 +570,7 @@ namespace module
             union Intdmask
             {
                 Intdmask(){}
-                Intdmask(uint32 v){value = v;}
+                Intdmask(const uint32 v){value = v;}
                ~Intdmask(){}    
               
                 uint32 value;

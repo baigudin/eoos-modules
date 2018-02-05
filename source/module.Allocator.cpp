@@ -15,7 +15,7 @@ namespace module
      * @param size number of bytes to allocate.
      * @return allocated memory address or a null pointer.
      */    
-    void* Allocator::allocate(size_t size)
+    void* Allocator::allocate(const size_t size)
     {
         return heap_ != NULL ? heap_->allocate(size, NULL) : NULL;
     }

@@ -18,8 +18,9 @@ namespace module
      */
     ::api::ProcessorTimer* Timer::create(const ::module::Timer::Resource res)         
     {
-        ::api::ProcessorTimer* resource;  
-        resource = res.index >= 0 ? new TimerController(res.index) : new TimerController();
+        ::api::ProcessorTimer* const resource = res.index >= 0 
+                                              ? new TimerController(res.index) 
+                                              : new TimerController();
         if(resource == NULL) 
         {
             return NULL; 

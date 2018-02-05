@@ -82,13 +82,13 @@ namespace module
             {
                 return false;
             }
-            uint64 pllm = cpuClock_ / sourceClock_ - 1;
+            const uint64 pllm = cpuClock_ / sourceClock_ - 1;
             if(pllm & ~0x000000000000003f) 
             {
                 return false;      
             }
             // CLKIN cycle time in ns
-            int64 c = 1000000000 / sourceClock_;
+            const int64 c = 1000000000 / sourceClock_;
             // Create PLL registers map
             reg::Pllc* regPll = new (reg::Pllc::ADDRESS1) reg::Pllc();
             // Wait 100 us for PLL stabilization 

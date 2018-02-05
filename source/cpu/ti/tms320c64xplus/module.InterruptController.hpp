@@ -136,7 +136,7 @@ namespace module
          * @param handler user class which implements an interrupt handler interface.
          * @param source  available interrupt source.
          */     
-        InterruptController(::api::Task* handler, int32 source) : Parent(),
+        InterruptController(::api::Task* const handler, const int32 source) : Parent(),
             isConstructed_ (getConstruct()),
             index_         (-1),
             ctx_           (){
@@ -216,7 +216,7 @@ namespace module
          *
          * @param status returned status by lock method.
          */
-        virtual void enable(bool status)
+        virtual void enable(const bool status)
         {
             if( isAllocated() )
             {
@@ -231,7 +231,7 @@ namespace module
          * @param source  available interrupt source.
          * @return true if handler is set successfully.
          */      
-        virtual bool setHandler(::api::Task& handler, int32 source)
+        virtual bool setHandler(::api::Task& handler, const int32 source)
         {
             if( not isConstructed_ ) 
             {
@@ -241,8 +241,8 @@ namespace module
             {
                 return false;
             }
-            Source src = static_cast<Source>(source);
-            int32 index = contexts_->allocate(handler, src);
+            const Source src = static_cast<Source>(source);
+            const int32 index = contexts_->allocate(handler, src);
             if(index == -1) 
             {
                 return false;
@@ -361,7 +361,7 @@ namespace module
          * @param source  available interrupt source.     
          * @return true if object has been constructed successfully.
          */
-        bool construct(::api::Task& handler, int32 source)
+        bool construct(::api::Task& handler, const int32 source)
         {
             if(isInitialized_ != IS_INITIALIZED) 
             {
@@ -411,14 +411,14 @@ namespace module
          * @param source available interrupt source.
          * @param vn     hardware interrupt vector number.
          */    
-        static void setMuxRegister(int32 source, int32 vn)
+        static void setMuxRegister(const int32 source, const int32 vn)
         {
             if(vn < 4 || vn > 16) 
             {
                 return;
             }
-            int32 i = vn >> 2;
-            int32 p = vn & 0x3;
+            const int32 i = vn >> 2;
+            const int32 p = vn & 0x3;
             // Do reading a current register value, modify the value, and store it back. 
             // This sequence is required only because TI has not corrected a bug yet with 
             // the internal data bus of the interrupt controller. The bug cause that 
@@ -636,7 +636,7 @@ namespace module
              * @param source  available interrupt source.
              * @return a vector intdex, or -1 if an error has been occurred.
              */      
-            int32 allocate(::api::Task& task, Source source)
+            int32 allocate(::api::Task& task, const Source source)
             {
                 if( not isConstructed() ) 
                 {
@@ -699,7 +699,7 @@ namespace module
              *
              * @param index an interrupt index.       
              */        
-            void free(int32 index)
+            void free(const int32 index)
             {
                 if( not isConstructed() ) 
                 {
@@ -728,7 +728,7 @@ namespace module
              * @param index an interrupt index.
              * @return hi context.
              */        
-            ContextHi& getHi(int32 index)
+            ContextHi& getHi(const int32 index)
             {
                 if( not isConstructed() ) 
                 {
@@ -747,7 +747,7 @@ namespace module
              * @param index an interrupt index.
              * @return a low context.
              */              
-            ContextLo& getLo(int32 index)
+            ContextLo& getLo(const int32 index)
             {
                 if( not isConstructed() ) 
                 {
@@ -796,7 +796,7 @@ namespace module
              * @param source interrupt source.
              * @return true if the source is available.
              */      
-            static bool isSource(int32 source)
+            static bool isSource(const int32 source)
             {
                 return 0 <= source && source < 128 ? true : false;
             }
@@ -807,7 +807,7 @@ namespace module
              * @param index an index.
              * @return true if the index is available.
              */      
-            static bool isIndex(int32 index)
+            static bool isIndex(const int32 index)
             {
                 return 0 <= index && index < NUMBER_VECTORS ? true : false;
             }      

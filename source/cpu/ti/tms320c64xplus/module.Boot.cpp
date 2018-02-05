@@ -57,7 +57,7 @@ namespace module
     Boot::CRecord* Boot::getCRecord(Boot::CRecord* record)
     {
         const int32 align = 0x7;
-        int32 size = (record->size + align) & ~align;    
+        const int32 size = (record->size + align) & ~align;    
         record = reinterpret_cast<CRecord*>(&record->data[size]);
         return record->size != 0 ? record : NULL;
     }
