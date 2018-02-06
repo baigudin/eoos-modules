@@ -126,7 +126,7 @@ namespace module
             }
             // Initialize Control Status Register (Csr).        
             Csr csr = 0;
-            // Set GIE bit to zero for restoring with out crash, because
+            // Set GIE bit to zero for restoring without any crashes, because
             // this value will be set while the restoring is being executed, and
             // an enabling of global interrupts is not needed case.
             csr.bit.gie = 0;
