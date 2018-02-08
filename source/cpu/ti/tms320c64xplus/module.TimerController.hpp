@@ -55,7 +55,7 @@ namespace module
          *
          * @param index available timer index.
          */
-        TimerController(int32 index) : Parent(),
+        TimerController(const int32 index) : Parent(),
             isConstructed_ (getConstruct()),        
             timerClock_    (0),
             index_         (-1),
@@ -87,7 +87,10 @@ namespace module
          */      
         virtual int64 getCount() const
         {
-            if( not isConstructed_ ) return 0;
+            if( not isConstructed_ ) 
+            {
+                return 0;
+            }
             uint64 cnt;
             cnt = regTim_->cnthi.value;
             cnt = cnt << 32;
@@ -102,7 +105,10 @@ namespace module
          */      
         virtual int64 getPeriod() const
         {
-            if( not isConstructed_ ) return 0;
+            if( not isConstructed_ ) 
+            {
+                return 0;
+            }
             uint64 prd;
             prd = regTim_->prdhi.value;
             prd = prd << 32;      
@@ -115,18 +121,30 @@ namespace module
          *
          * @param count timer counter register value.
          */      
-        virtual void setCount(int64 count)
+        virtual void setCount(const int64 count)
         {
-            if( not isConstructed_ ) return;
+            if( not isConstructed_ ) 
+            {
+                return;
+            }
             uint64 cnt = count;
-            uint64 prd = getPeriod();
-            if(cnt > prd) return;
-            bool is = isStarted();
-            if(is) stop();
+            const uint64 prd = getPeriod();
+            if(cnt > prd) 
+            {
+                return;
+            }
+            const bool is = isStarted();
+            if(is) 
+            {
+                stop();
+            }
             regTim_->cntlo.value = cnt & 0xffffffff;
             cnt = cnt >> 32;       
             regTim_->cnthi.value = cnt & 0xffffffff;
-            if(is) start();   
+            if(is) 
+            {
+                start();   
+            }
         }      
         
         /**
@@ -134,18 +152,30 @@ namespace module
          *
          * @param us timer period in microseconds, zero sets the period to maxinum value.
          */      
-        virtual void setPeriod(int64 us=0)
+        virtual void setPeriod(const int64 us=0)
         {
-            if( not isConstructed_ ) return;
-            int64 clock = getInternalClock();
-            if(clock == 0) return;       
+            if( not isConstructed_ ) 
+            {
+                return;
+            }
+            const int64 clock = getInternalClock();
+            if(clock == 0) 
+            {
+                return;       
+            }
             uint64 prd = us != 0 ? (us * clock) / 1000000 : 0xffffffffffffffff;
-            bool is = isStarted();
-            if(is) stop();
+            const bool is = isStarted();
+            if(is) 
+            { 
+                stop();
+            }
             regTim_->prdlo.value = prd & 0xffffffff;
             prd = prd >> 32;       
             regTim_->prdhi.value = prd & 0xffffffff;
-            if(is) start();
+            if(is) 
+            {
+                start();
+            }
         }
         
         /**
@@ -153,7 +183,10 @@ namespace module
          */      
         virtual void start()
         {
-            if( not isConstructed_ ) return; 
+            if( not isConstructed_ ) 
+            {
+                return; 
+            }
             regTim_->tcr.bit.enamodeLo = 2;
         }
         
@@ -162,14 +195,17 @@ namespace module
          */      
         virtual void stop()
         {
-            if( not isConstructed_ ) return;   
+            if( not isConstructed_ ) 
+            {
+                return;   
+            }
             regTim_->tcr.bit.enamodeLo = 0;      
         }
       
         /**
          * Returns this timer index.
          *
-         * @return index of this timer, or -1 if error has been occurred.
+         * @return index of this timer, or -1 if an error has been occurred.
          */      
         virtual int32 getIndex() const
         {
@@ -193,14 +229,17 @@ namespace module
          */  
         virtual int64 getInternalClock() const
         {
-            if( not isConstructed_ ) return 0; 
+            if( not isConstructed_ ) 
+            {
+                return 0; 
+            }
             return timerClock_;
         }    
         
         /**
          * Returns an available interrupt source for this timer.
          *
-         * @return available interrupt source, or -1 if error has been occurred.
+         * @return available interrupt source, or -1 if an error has been occurred.
          */  
         virtual int32 getInterrupSource() const
         {
@@ -219,7 +258,7 @@ namespace module
          * Initialization.
          *
          * @param config the operating system configuration.
-         * @return true if no errors.
+         * @return true if no errors have been occurred.
          */
         static bool initialize(const ::Configuration& config)
         {
@@ -249,11 +288,20 @@ namespace module
          * @param index available timer index.
          * @return boolean result.
          */  
-        bool construct(int32 index)
+        bool construct(const int32 index)
         {
-            if(isInitialized_ != IS_INITIALIZED) return false;    
-            if( not isConstructed_ ) return false;
-            if( not isIndex(index) ) return false; 
+            if(isInitialized_ != IS_INITIALIZED) 
+            {
+                return false;    
+            }
+            if( not isConstructed_ ) 
+            {
+                return false;
+            }
+            if( not isIndex(index) ) 
+            {
+                return false; 
+            }
             do
             {
                 if(lock_[index] == true)
@@ -316,7 +364,7 @@ namespace module
          * @param index a timer index.
          * @return boolean result.
          */  
-        bool isIndex(int32 index)
+        bool isIndex(const int32 index)
         {
             return 0 <= index && index < RESOURCES_NUMBER ? true : false;
         }

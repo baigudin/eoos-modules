@@ -21,7 +21,7 @@ namespace module
         /**
          * Returns the PLL interface of a target processor.
          *
-         * @return target processor hardware interface, or NULL if error has been occurred.
+         * @return target processor hardware interface, or NULL if an error has been occurred.
          */
         static ::api::ProcessorPll* create();    
         

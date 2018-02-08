@@ -69,7 +69,7 @@ namespace module
          * @return given value.     
          */
         template<typename Type>
-        static inline Type enableAll(bool status, Type ret)
+        static inline Type enableAll(const bool status, const Type ret)
         {
             enableAll(status);
             return ret;   

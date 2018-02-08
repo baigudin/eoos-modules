@@ -13,13 +13,19 @@ namespace module
     /**
      * Returns the register interface of a target processor.
      *
-     * @return target processor register interface, or NULL if error has been occurred.
+     * @return target processor register interface, or NULL if an error has been occurred.
      */
     ::api::ProcessorRegisters* Registers::create()
     {
-        ::api::ProcessorRegisters* resource = new RegistersController();
-        if(resource == NULL) return NULL; 
-        if(resource->isConstructed()) return resource;       
+        ::api::ProcessorRegisters* const resource = new RegistersController();
+        if(resource == NULL) 
+        {
+            return NULL; 
+        }
+        if(resource->isConstructed()) 
+        {
+            return resource;       
+        }
         delete resource;
         return NULL;      
     }

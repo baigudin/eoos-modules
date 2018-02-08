@@ -136,7 +136,7 @@ namespace module
          * @param handler user class which implements an interrupt handler interface.
          * @param source  available interrupt source.
          */     
-        InterruptController(::api::Task* handler, int32 source) : Parent(),
+        InterruptController(::api::Task* const handler, const int32 source) : Parent(),
             isConstructed_ (getConstruct()),
             index_         (-1),
             ctx_           (){
@@ -166,8 +166,10 @@ namespace module
          */      
         virtual void jump()
         {
-            if( not isAllocated() ) return;
-            jumpLow(ctx_.hi->number);    
+            if( isAllocated() )
+            {
+                jumpLow(ctx_.hi->number);    
+            }
         }
         
         /**
@@ -175,8 +177,10 @@ namespace module
          */     
         virtual void clear()
         {
-            if( not isAllocated() ) return;    
-            clearLow(ctx_.hi->number);    
+            if( isAllocated() ) 
+            {
+                clearLow(ctx_.hi->number);    
+            }
         }
         
         /**
@@ -184,8 +188,10 @@ namespace module
          */    
         virtual void set()
         {
-            if( not isAllocated() ) return;
-            setLow(ctx_.hi->number);    
+            if( isAllocated() ) 
+            {
+                setLow(ctx_.hi->number);    
+            }
         }  
         
         /**
@@ -195,8 +201,14 @@ namespace module
          */    
         virtual bool disable()
         {
-            if( not isAllocated() ) return false;
-            return disableLow(ctx_.hi->number);
+            if( isAllocated() ) 
+            {
+                return disableLow(ctx_.hi->number);
+            }
+            else
+            {
+                return false;                
+            }
         }
         
         /**
@@ -204,10 +216,12 @@ namespace module
          *
          * @param status returned status by lock method.
          */
-        virtual void enable(bool status)
+        virtual void enable(const bool status)
         {
-            if( not isAllocated() ) return;    
-            enableLow(ctx_.hi->number, status);    
+            if( isAllocated() )
+            {
+                enableLow(ctx_.hi->number, status);    
+            }
         }
        
         /**
@@ -217,13 +231,22 @@ namespace module
          * @param source  available interrupt source.
          * @return true if handler is set successfully.
          */      
-        virtual bool setHandler(::api::Task& handler, int32 source)
+        virtual bool setHandler(::api::Task& handler, const int32 source)
         {
-            if( not isConstructed_ ) return false;
-            if( isAllocated() )  return false;
-            Source src = static_cast<Source>(source);
-            int32 index = contexts_->allocate(handler, src);
-            if(index == -1) return false;
+            if( not isConstructed_ ) 
+            {
+                return false;
+            }
+            if( isAllocated() )  
+            {
+                return false;
+            }
+            const Source src = static_cast<Source>(source);
+            const int32 index = contexts_->allocate(handler, src);
+            if(index == -1) 
+            {
+                return false;
+            }
             ctx_.hi = &contexts_->getHi(index);
             ctx_.lo = &contexts_->getLo(index);
             setMux();
@@ -236,7 +259,10 @@ namespace module
          */        
         virtual void removeHandler()
         {
-            if( not isAllocated() ) return;  
+            if( not isAllocated() ) 
+            {
+                return;  
+            }
             disable();
             clear();
             resetMux();
@@ -250,8 +276,10 @@ namespace module
          */
         virtual void setContext(::api::ProcessorRegisters& reg)
         {
-            if( not isAllocated() ) return;
-            ctx_.lo->reg = reg.getRegisters();
+            if( isAllocated() )
+            {
+                ctx_.lo->reg = reg.getRegisters();
+            }
         }
 
         /**
@@ -259,15 +287,17 @@ namespace module
          */
         virtual void restoreContext()
         {
-            if( not isAllocated() ) return;
-            ctx_.lo->reg = ctx_.hi->reg->getRegisters();    
+            if( isAllocated() )
+            {
+                ctx_.lo->reg = ctx_.hi->reg->getRegisters();    
+            }
         }        
       
         /**
          * Initialization.
          *
          * @param config the operating system configuration.
-         * @return true if no errors.
+         * @return true if no errors have been occurred.
          */
         static bool initialize(const ::Configuration& config)
         {
@@ -275,10 +305,16 @@ namespace module
             regInt_ = 0;
             contexts_ = NULL;
             contextHi_ = NULL;
-            if(config.cpuClock <= 0) return false;      
+            if(config.cpuClock <= 0) 
+            {
+                return false;      
+            }
             regInt_ = new (reg::Intc::ADDRESS) reg::Intc();
             contexts_ = new Contexts();
-            if( contexts_ == NULL || not contexts_->isConstructed() ) return false;
+            if( contexts_ == NULL || not contexts_->isConstructed() ) 
+            {
+                return false;
+            }
             contextHi_ = &contexts_->getHi(0);
             initLow();
             // Set base value of registers
@@ -311,7 +347,10 @@ namespace module
          */
         bool construct()
         {
-            if(isInitialized_ != IS_INITIALIZED) return false;
+            if(isInitialized_ != IS_INITIALIZED) 
+            {
+                return false;
+            }
             return true;
         }
         
@@ -322,9 +361,12 @@ namespace module
          * @param source  available interrupt source.     
          * @return true if object has been constructed successfully.
          */
-        bool construct(::api::Task& handler, int32 source)
+        bool construct(::api::Task& handler, const int32 source)
         {
-            if(isInitialized_ != IS_INITIALIZED) return false;
+            if(isInitialized_ != IS_INITIALIZED) 
+            {
+                return false;
+            }
             return setHandler(handler, source);
         }   
         
@@ -335,7 +377,10 @@ namespace module
          */
         bool isAllocated()
         {
-            if( not isConstructed_ ) return false;
+            if( not isConstructed_ ) 
+            {
+                return false;
+            }
             return index_ == -1 ? false : true;
         }
         
@@ -366,11 +411,14 @@ namespace module
          * @param source available interrupt source.
          * @param vn     hardware interrupt vector number.
          */    
-        static void setMuxRegister(int32 source, int32 vn)
+        static void setMuxRegister(const int32 source, const int32 vn)
         {
-            if(vn < 4 || vn > 16) return;
-            int32 i = vn >> 2;
-            int32 p = vn & 0x3;
+            if(vn < 4 || vn > 16) 
+            {
+                return;
+            }
+            const int32 i = vn >> 2;
+            const int32 p = vn & 0x3;
             // Do reading a current register value, modify the value, and store it back. 
             // This sequence is required only because TI has not corrected a bug yet with 
             // the internal data bus of the interrupt controller. The bug cause that 
@@ -497,16 +545,7 @@ namespace module
             /** 
              * Destructor.
              */
-           ~ContextLo(){}
-           
-            /**
-             * Equality operator.
-             *
-             * @param obj1 first object.
-             * @param obj2 second object.
-             * @return true if object are equal.
-             */
-            friend bool operator ==(const ContextLo& obj1, const ContextLo& obj2);     
+           ~ContextLo(){} 
       
         };
         
@@ -555,15 +594,6 @@ namespace module
              * Destructor.
              */
            ~ContextHi(){}
-           
-            /**
-             * Equality operator.
-             *
-             * @param obj1 first object.
-             * @param obj2 second object.
-             * @return true if object are equal.
-             */
-            friend bool operator ==(const ContextHi& obj1, const ContextHi& obj2);
       
         };
             
@@ -598,24 +628,43 @@ namespace module
             virtual ~Contexts()
             {
             }
-            
+                
+            /**
+             * Tests if this object has been constructed.
+             *
+             * @return true if object has been constructed successfully.
+             */
+            virtual bool isConstructed() const
+            {
+                return this->isConstructed_;
+            }            
+
             /**
              * Allocates interrupt vectot.
              *
              * @param task    user class which implements an interrupt handler interface.
              * @param source  available interrupt source.
-             * @return a vector intdex, or -1 if error has been occurred.
+             * @return a vector intdex, or -1 if an error has been occurred.
              */      
-            int32 allocate(::api::Task& task, Source source)
+            int32 allocate(::api::Task& task, const Source source)
             {
-                if( not isConstructed() ) return false;
-                if( not isSource(source) ) return false;
+                if( not isConstructed() ) 
+                {
+                    return false;
+                }
+                if( not isSource(source) ) 
+                {
+                    return false;
+                }
                 int32 index = -1;
                 // Test if interrupt source had been alloced
                 bool wasAllocated = false;
                 for(int32 i=0; i<NUMBER_VECTORS; i++)
                 {
-                    if(hi_[i].source != source) continue;
+                    if(hi_[i].source != source) 
+                    {
+                        continue;
+                    }
                     wasAllocated = true;
                     break;
                 }        
@@ -623,11 +672,17 @@ namespace module
                 // Looking for free vector and alloc that if it is found          
                 for(int32 i=0; i<Contexts::NUMBER_VECTORS; i++)
                 {
-                    if(hi_[i].handler != NULL) continue;
+                    if(hi_[i].handler != NULL) 
+                    {
+                        continue;
+                    }
                     index = i;
                     break;
                 }
-                if(index < 0) return -1;
+                if(index < 0) 
+                {
+                    return -1;
+                }
                 // Set new context
                 ContextHi* hi = &hi_[index];
                 ContextLo* lo = &lo_[index];
@@ -635,9 +690,15 @@ namespace module
                 hi->source = source;
                 hi->handler = &task;      
                 hi->reg = ::module::Registers::create();
-                if(hi->reg == NULL) return -1;
+                if(hi->reg == NULL) 
+                {
+                    return -1;
+                }
                 hi->stack = new Stack(::module::Processor::getStackType(), task.getStackSize() >> 3);
-                if(hi->stack == NULL || not hi->stack->isConstructed()) return -1;
+                if(hi->stack == NULL || not hi->stack->isConstructed()) 
+                {
+                    return -1;
+                }
                 lo->reg = hi->reg->getRegisters();
                 lo->tos = hi->stack->getTos();      
                 return index;
@@ -648,10 +709,16 @@ namespace module
              *
              * @param index an interrupt index.       
              */        
-            void free(int32 index)
+            void free(const int32 index)
             {
-                if( not isConstructed() ) return;      
-                if( not isIndex(index) ) return ;   
+                if( not isConstructed() ) 
+                {
+                    return;      
+                }
+                if( not isIndex(index) ) 
+                {
+                    return;   
+                }
                 ContextHi* hi = &hi_[index];
                 ContextLo* lo = &lo_[index];        
                 delete hi->stack;        
@@ -671,10 +738,16 @@ namespace module
              * @param index an interrupt index.
              * @return hi context.
              */        
-            ContextHi& getHi(int32 index)
+            ContextHi& getHi(const int32 index)
             {
-                if( not isConstructed() ) return illegalHi_;      
-                if( not isIndex(index) ) return illegalHi_;              
+                if( not isConstructed() ) 
+                {
+                    return illegalHi_;      
+                }
+                if( not isIndex(index) ) 
+                {
+                    return illegalHi_;
+                }
                 return hi_[index];
             }
           
@@ -684,10 +757,16 @@ namespace module
              * @param index an interrupt index.
              * @return a low context.
              */              
-            ContextLo& getLo(int32 index)
+            ContextLo& getLo(const int32 index)
             {
-                if( not isConstructed() ) return illegalLo_;      
-                if( not isIndex(index) ) return illegalLo_;              
+                if( not isConstructed() ) 
+                {
+                    return illegalLo_;      
+                }
+                if( not isIndex(index) ) 
+                {
+                    return illegalLo_;              
+                }
                 return lo_[index];
             }
           
@@ -702,9 +781,18 @@ namespace module
              */
             bool construct()
             {
-                if( not isConstructed() ) return false;
-                if( not hi_.isConstructed() ) return false;
-                if( not lo_.isConstructed() ) return false;
+                if( not isConstructed() ) 
+                {
+                    return false;
+                }
+                if( not hi_.isConstructed() ) 
+                {
+                    return false;
+                }
+                if( not lo_.isConstructed() ) 
+                {
+                    return false;
+                }
                 hi_.setIllegal(illegalHi_);
                 lo_.setIllegal(illegalLo_);
                 hi_.fill(illegalHi_);
@@ -718,7 +806,7 @@ namespace module
              * @param source interrupt source.
              * @return true if the source is available.
              */      
-            static bool isSource(int32 source)
+            static bool isSource(const int32 source)
             {
                 return 0 <= source && source < 128 ? true : false;
             }
@@ -729,20 +817,20 @@ namespace module
              * @param index an index.
              * @return true if the index is available.
              */      
-            static bool isIndex(int32 index)
+            static bool isIndex(const int32 index)
             {
                 return 0 <= index && index < NUMBER_VECTORS ? true : false;
             }      
             
             /**
-             * Hi level interrupt contexts.
+             * Hi level interrupt contexts static buffer.
              */            
-            ::library::Buffer<ContextHi, NUMBER_VECTORS> hi_;
+            ::library::Buffer<ContextHi, NUMBER_VECTORS, Allocator> hi_;
             
             /**
-             * Low level interrupt contexts.
+             * Low level interrupt contexts dynamic buffer.
              */    
-            ::library::Buffer<ContextLo> lo_;
+            ::library::Buffer<ContextLo, 0, Allocator> lo_;
           
             /**
              * Hi level interrupt illegal context.
@@ -844,79 +932,35 @@ namespace module
     };
     
     /**
-     * HW interrupt handle routing.
-     *
-     * @param index index of HW interrupt vector number in contexts table
-     */  
-    void InterruptController::handler(register int32 index)
-    {
-        register ContextHi* ctx = &contextHi_[index];
-        #ifdef EOOS_NESTED_INT
-        register bool is = ctx->disable();
-        Interrupt::enableAll(true);
-        #endif
-        ctx->handler->main();
-        #ifdef EOOS_NESTED_INT
-        Interrupt::disableAll();
-        ctx->enable(is);
-        #endif
-    }
-    
-    /**
      * Equality operator.
      *
      * @param obj1 first object.
      * @param obj2 second object.
      * @return true if object are equal.
-     */
+     */     
     inline bool operator ==(const InterruptController::ContextHi& obj1, const InterruptController::ContextHi& obj2)
     {
-        if      ( obj1.number  != obj2.number  ) return false;
-        else if ( obj1.source  != obj2.source  ) return false;
-        else if ( obj1.handler != obj2.handler ) return false;
-        else if ( obj1.reg     != obj2.reg     ) return false;
-        else if ( obj1.stack   != obj2.stack   ) return false;
-        else return true;
+        if      ( obj1.number  != obj2.number  ) { return false; }
+        else if ( obj1.source  != obj2.source  ) { return false; }
+        else if ( obj1.handler != obj2.handler ) { return false; }
+        else if ( obj1.reg     != obj2.reg     ) { return false; }
+        else if ( obj1.stack   != obj2.stack   ) { return false; }
+        else { return true; }
     }      
-    
+         
     /**
      * Equality operator.
      *
      * @param obj1 first object.
      * @param obj2 second object.
      * @return true if object are equal.
-     */
+     */     
     inline bool operator ==(const InterruptController::ContextLo& obj1, const InterruptController::ContextLo& obj2)
     {
-        if      ( obj1.tos != obj2.tos ) return false;
-        else if ( obj1.reg != obj2.reg ) return false;
-        else return true;
-    }   
-  
-    /**
-     * The module has been initialized successfully (no boot).
-     */
-    int32 InterruptController::isInitialized_;  
-  
-    /**
-     * HW interrupt registers (no boot).
-     */
-    reg::Intc* InterruptController::regInt_;  
+        if      ( obj1.tos != obj2.tos ) { return false; }
+        else if ( obj1.reg != obj2.reg ) { return false; }
+        else {return true; }
+    }     
     
-    /**
-     * All interrupt resource contexts (no boot).
-     */
-    InterruptController::Contexts* InterruptController::contexts_;
-    
-    /**
-     * All interrupt resource contexts (no boot).
-     */    
-    InterruptController::ContextHi* InterruptController::contextHi_;
-    
-    /**
-     * Buffer for allocating low level interrupts contexts table (no boot).
-     */    
-    uint64 InterruptController::Contexts::buffer_[ InterruptController::Contexts::NUMBER_VECTORS ];      
-  
 }
 #endif // MODULE_INTERRUPT_CONTROLLER_HPP_

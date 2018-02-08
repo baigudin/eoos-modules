@@ -13,14 +13,19 @@ namespace module
     /**
      * Returns the register interface of a target processor.
      *
-     * @return target processor register interface, or NULL if error has been occurred.
+     * @return target processor register interface, or NULL if an error has been occurred.
      */
     ::api::ProcessorPll* Pll::create()
     {
-        ::api::ProcessorPll* resource;
-        resource = new PllController();
-        if(resource == NULL) return NULL; 
-        if(resource->isConstructed()) return resource;       
+        ::api::ProcessorPll* const resource = new PllController();
+        if(resource == NULL) 
+        {
+            return NULL; 
+        }
+        if(resource->isConstructed()) 
+        {
+            return resource;       
+        }
         delete resource;
         return NULL;  
     }

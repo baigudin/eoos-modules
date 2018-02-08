@@ -14,7 +14,7 @@ namespace module
     /**
      * Returns the register interface of a target processor.
      *
-     * @return target processor register interface, or NULL if error has been occurred.
+     * @return target processor register interface, or NULL if an error has been occurred.
      */
     ::module::Watchdog* Watchdog::create()
     {

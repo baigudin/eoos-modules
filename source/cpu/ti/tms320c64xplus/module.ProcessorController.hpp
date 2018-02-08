@@ -41,7 +41,7 @@ namespace module
          * Initialization.
          *
          * @param config the operating system configuration.
-         * @return true if no errors.
+         * @return true if no errors have been occurred.
          */
         static bool initialize(const ::Configuration& config)
         {
@@ -49,16 +49,28 @@ namespace module
             stage_ = 0;
             // Stage 1 
             stage_++;
-            if( not ::module::Pll::initialize(config) ) return false;    
+            if( not ::module::Pll::initialize(config) ) 
+            {
+                return false;    
+            }
             // Stage 2 
             stage_++;
-            if( not ::module::Registers::initialize(config) ) return false;
+            if( not ::module::Registers::initialize(config) ) 
+            {
+                return false;
+            }
             // Stage 3 
             stage_++;
-            if( not ::module::Interrupt::initialize(config) ) return false;
+            if( not ::module::Interrupt::initialize(config) ) 
+            {
+                return false;
+            }
             // Stage 4 
             stage_++;
-            if( not ::module::Timer::initialize(config) ) return false;
+            if( not ::module::Timer::initialize(config) ) 
+            {
+                return false;
+            }
             // Stage complete
             stage_ = -1;
             isInitialized_ = IS_INITIALIZED;            
@@ -100,7 +112,10 @@ namespace module
          */
         bool construct()
         {
-            if(isInitialized_ != IS_INITIALIZED) return false;
+            if(isInitialized_ != IS_INITIALIZED) 
+            {
+                return false;
+            }
             return true;
         }    
         
