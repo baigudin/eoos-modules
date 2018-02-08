@@ -51,16 +51,6 @@ namespace module
         {
         }  
         
-        /**
-         * Tests if this object has been constructed.
-         *
-         * @return true if object has been constructed successfully.
-         */    
-        virtual bool isConstructed() const
-        {
-            return isConstructed_;
-        }
-        
         /** 
          * Assignment operator.
          *
